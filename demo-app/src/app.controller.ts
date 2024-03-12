@@ -1,8 +1,11 @@
 import { Controller, Get, Header, Logger } from '@nestjs/common';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   private readonly logger = new Logger(AppController.name);
+
+  constructor(private readonly appService: AppService) {}
 
   @Get()
   getHello(): string {
@@ -20,22 +23,14 @@ export class AppController {
     return JSON.stringify(process.env);
   }
 
-  @Get('heavy-computation')
+  @Get('heavy-cpu-computation')
   getHeavyComputationResult() {
-    const rounds = Number(process.env.HEAVY_COMPUTATION_ROUNDS ?? 10000000000);
-    for (let i = 0; i < rounds; i++) {
-      // Heavy computation
-    }
-
-    return '42\n';
+    return this.appService.getHeavyCpuComputationResult();
   }
 
-  @Get('oom')
+  @Get('heavy-memory-computation')
   getOom() {
-    const arr = [];
-    while (true) {
-      arr.push(new Array(1000000));
-    }
+    return this.appService.getHeavyMemoryComputationResult();
   }
 
   @Get('status')
