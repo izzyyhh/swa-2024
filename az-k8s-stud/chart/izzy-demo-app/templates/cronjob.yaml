@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjobname
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: izzys-job
+            image: dkarnutsch/swa-demo-app
+            command: ['node', 'dist/console.js', 'demo-command']
+          restartPolicy: OnFailure
+---
+
